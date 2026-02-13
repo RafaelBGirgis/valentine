@@ -50,7 +50,7 @@ The creator of this website is not responsible for any:
 - Butterflies in stomachs
 - Cheesy smiles
 - Aggressive eye-rolling followed by a reluctant "fine, yes"
-- Make sure to change the name becuase it's hardcoded in the file
+- Make sure to change the name in index.html becuase it's hardcoded in the file
 
 ## License
 
