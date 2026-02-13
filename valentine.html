@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mary, Will You Be My Valentine? 💌</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blush: #fff0f3;
+    --rose: #e8556d;
+    --deep-rose: #c9354d;
+    --cream: #fff8f0;
+    --gold: #e8a87c;
+    --soft-pink: #ffb6c1;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Quicksand', sans-serif;
+    background: var(--blush);
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Floating hearts background */
+  .hearts-bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .floating-heart {
+    position: absolute;
+    font-size: 1.4rem;
+    opacity: 0;
+    animation: floatUp linear infinite;
+    color: var(--soft-pink);
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(100vh) rotate(0deg) scale(0.5); opacity: 0; }
+    10% { opacity: 0.6; }
+    90% { opacity: 0.3; }
+    100% { transform: translateY(-10vh) rotate(360deg) scale(1.2); opacity: 0; }
+  }
+
+  .card {
+    position: relative;
+    z-index: 10;
+    background: white;
+    border-radius: 28px;
+    padding: 50px 44px;
+    max-width: 440px;
+    width: 90%;
+    text-align: center;
+    box-shadow:
+      0 4px 30px rgba(232, 85, 109, 0.12),
+      0 1px 3px rgba(0,0,0,0.04);
+    animation: cardIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+
+  @keyframes cardIn {
+    from { opacity: 0; transform: scale(0.85) translateY(30px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .envelope {
+    font-size: 4rem;
+    margin-bottom: 8px;
+    display: inline-block;
+    animation: wiggle 2s ease-in-out infinite;
+  }
+
+  @keyframes wiggle {
+    0%, 100% { transform: rotate(-3deg); }
+    50% { transform: rotate(3deg); }
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    color: var(--deep-rose);
+    margin-bottom: 10px;
+    line-height: 1.2;
+  }
+
+  h1 i { color: var(--rose); }
+
+  .subtitle {
+    color: #b07a8a;
+    font-size: 1rem;
+    margin-bottom: 36px;
+    font-weight: 400;
+  }
+
+  .buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    align-items: center;
+    min-height: 60px;
+    position: relative;
+  }
+
+  .btn-yes {
+    background: var(--rose);
+    color: white;
+    border: none;
+    padding: 14px 38px;
+    border-radius: 50px;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 4px 16px rgba(232, 85, 109, 0.35);
+  }
+
+  .btn-yes:hover {
+    transform: scale(1.1);
+    background: var(--deep-rose);
+    box-shadow: 0 6px 24px rgba(232, 85, 109, 0.5);
+  }
+
+  .btn-no {
+    background: transparent;
+    color: #cba0aa;
+    border: 2px solid #e8c8cf;
+    padding: 14px 38px;
+    border-radius: 50px;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    position: relative;
+    user-select: none;
+  }
+
+  .btn-no:hover {
+    transform: scale(0.9);
+  }
+
+  .message-box {
+    margin-top: 16px;
+    color: var(--rose);
+    font-weight: 600;
+    font-size: 0.95rem;
+    min-height: 24px;
+    transition: all 0.3s ease;
+  }
+
+  /* YES screen */
+  .yes-screen {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .yes-screen.show {
+    display: flex;
+    animation: cardIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+
+  .big-heart {
+    font-size: 5rem;
+    animation: heartbeat 1s ease-in-out infinite;
+    margin-bottom: 12px;
+  }
+
+  @keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    15% { transform: scale(1.15); }
+    30% { transform: scale(1); }
+    45% { transform: scale(1.1); }
+  }
+
+  .yes-screen h1 {
+    font-size: 2.4rem;
+    margin-bottom: 8px;
+  }
+
+  .yes-text {
+    color: #b07a8a;
+    font-size: 1.05rem;
+    line-height: 1.6;
+  }
+
+  /* Confetti burst */
+  .confetti-piece {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    z-index: 100;
+    pointer-events: none;
+  }
+
+  @keyframes confettiFall {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+
+  .grow-yes {
+    animation: growYes 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+
+  @keyframes growYes {
+    to { transform: scale(1.15); padding: 16px 46px; font-size: 1.2rem; }
+  }
+
+  .shrink-no {
+    animation: shrinkNo 0.3s ease forwards;
+  }
+
+  @keyframes shrinkNo {
+    to { transform: scale(0.8); opacity: 0.5; font-size: 0.85rem; padding: 10px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hearts-bg" id="heartsBg"></div>
+
+<div class="card" id="card">
+  <!-- Ask screen -->
+  <div id="askScreen">
+    <div class="envelope">💌</div>
+    <h1>Mary, will you be<br>my <i>Valentine?</i></h1>
+    <p class="subtitle">I promise it'll be worth it ♡</p>
+    <div class="buttons">
+      <button class="btn-yes" id="btnYes">Yes! 💕</button>
+      <button class="btn-no" id="btnNo">No</button>
+    </div>
+    <div class="message-box" id="message"></div>
+  </div>
+
+  <!-- Yes screen -->
+  <div class="yes-screen" id="yesScreen">
+    <div class="big-heart">❤️</div>
+    <h1>Yay!! 🥰</h1>
+    <p class="yes-text">
+      I knew you'd say yes!<br>
+      You just made me the happiest person ever.<br>
+      Happy Valentine's Day, beautiful! 💐
+    </p>
+  </div>
+</div>
+
+<script>
+  // Floating hearts background
+  const heartsBg = document.getElementById('heartsBg');
+  const heartChars = ['♥', '♡', '❤', '💕', '💗'];
+  for (let i = 0; i < 20; i++) {
+    const heart = document.createElement('span');
+    heart.className = 'floating-heart';
+    heart.textContent = heartChars[Math.floor(Math.random() * heartChars.length)];
+    heart.style.left = Math.random() * 100 + '%';
+    heart.style.animationDuration = (6 + Math.random() * 8) + 's';
+    heart.style.animationDelay = (Math.random() * 10) + 's';
+    heart.style.fontSize = (0.8 + Math.random() * 1.4) + 'rem';
+    heartsBg.appendChild(heart);
+  }
+
+  const btnNo = document.getElementById('btnNo');
+  const btnYes = document.getElementById('btnYes');
+  const messageBox = document.getElementById('message');
+  const askScreen = document.getElementById('askScreen');
+  const yesScreen = document.getElementById('yesScreen');
+
+  const noMessages = [
+    "Are you sure? 🥺",
+    "Think again... pretty please? 🙏",
+    "That button doesn't work! Try the other one 😏",
+    "My heart just cracked a little... 💔",
+    "Wrong answer! Let me help you... 😄",
+    "Nope, not an option! 🚫",
+    "The 'No' button is broken, sorry! 🤷",
+    "I'll wait... ⏳",
+    "You're running out of excuses! 😆",
+    "Just click Yes already! 🥹",
+  ];
+
+  let noCount = 0;
+  let isRunning = false;
+
+  function moveNoButton() {
+    const card = document.getElementById('card');
+    const rect = card.getBoundingClientRect();
+    const btnRect = btnNo.getBoundingClientRect();
+
+    // Keep within card bounds
+    const maxX = rect.width - btnRect.width - 44;
+    const maxY = rect.height - btnRect.height - 20;
+
+    const newX = Math.random() * maxX - maxX / 2;
+    const newY = Math.random() * 100 - 20;
+
+    btnNo.style.position = 'absolute';
+    btnNo.style.left = `calc(50% + ${newX}px)`;
+    btnNo.style.top = `calc(70% + ${newY}px)`;
+    btnNo.style.transform = `translate(-50%, -50%) rotate(${Math.random() * 30 - 15}deg)`;
+  }
+
+  btnNo.addEventListener('mouseenter', () => {
+    if (noCount >= 2) {
+      moveNoButton();
+    }
+  });
+
+  btnNo.addEventListener('click', (e) => {
+    e.preventDefault();
+    noCount++;
+
+    // Show escalating messages
+    const msg = noMessages[Math.min(noCount - 1, noMessages.length - 1)];
+    messageBox.textContent = msg;
+    messageBox.style.animation = 'none';
+    messageBox.offsetHeight;
+    messageBox.style.animation = 'cardIn 0.4s ease both';
+
+    // Make Yes button grow and No button shrink
+    btnYes.classList.add('grow-yes');
+    if (noCount >= 3) {
+      btnNo.classList.add('shrink-no');
+    }
+
+    // After 2 clicks, the No button starts running away
+    if (noCount >= 3) {
+      moveNoButton();
+    }
+
+    // After enough tries, the No button just disappears
+    if (noCount >= 8) {
+      btnNo.style.transition = 'all 0.5s ease';
+      btnNo.style.opacity = '0';
+      btnNo.style.transform = 'scale(0) rotate(180deg)';
+      setTimeout(() => { btnNo.style.display = 'none'; }, 500);
+      messageBox.textContent = "Oops, the No button vanished! Only one choice left 😇";
+    }
+  });
+
+  // Confetti burst
+  function launchConfetti() {
+    const colors = ['#e8556d', '#ffb6c1', '#e8a87c', '#ff6b8a', '#ffd1dc', '#ff85a1', '#ffc2d1'];
+    for (let i = 0; i < 80; i++) {
+      const piece = document.createElement('div');
+      piece.className = 'confetti-piece';
+      piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+      piece.style.left = (40 + Math.random() * 20) + '%';
+      piece.style.top = (30 + Math.random() * 10) + '%';
+      piece.style.width = (6 + Math.random() * 8) + 'px';
+      piece.style.height = (6 + Math.random() * 8) + 'px';
+      piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+
+      const angle = Math.random() * Math.PI * 2;
+      const velocity = 200 + Math.random() * 400;
+      const vx = Math.cos(angle) * velocity;
+      const vy = Math.sin(angle) * velocity - 300;
+
+      document.body.appendChild(piece);
+
+      piece.animate([
+        { transform: 'translate(0,0) rotate(0deg)', opacity: 1 },
+        { transform: `translate(${vx}px, ${vy + 800}px) rotate(${Math.random()*720}deg)`, opacity: 0 }
+      ], {
+        duration: 1500 + Math.random() * 1000,
+        easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+      }).onfinish = () => piece.remove();
+    }
+  }
+
+  btnYes.addEventListener('click', () => {
+    askScreen.style.display = 'none';
+    yesScreen.classList.add('show');
+    launchConfetti();
+
+    // Second burst
+    setTimeout(launchConfetti, 600);
+  });
+</script>
+</body>
+</html>
